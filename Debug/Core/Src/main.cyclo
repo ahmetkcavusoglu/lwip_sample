@@ -1,0 +1,6 @@
+../Core/Src/main.c:65:7:tcp_server_recv_callback	3
+../Core/Src/main.c:81:7:tcp_server_accept_callback	2
+../Core/Src/main.c:94:6:tcp_server_init	2
+../Core/Src/main.c:112:5:main	1
+../Core/Src/main.c:160:6:SystemClock_Config	4
+../Core/Src/main.c:221:6:Error_Handler	1
