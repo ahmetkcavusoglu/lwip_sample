@@ -1,0 +1,4 @@
+../Core/Src/lwip_uart_comm.c:13:7:tcp_server_recv_callback	24	static
+../Core/Src/lwip_uart_comm.c:32:7:tcp_server_accept_callback	32	static
+../Core/Src/lwip_uart_comm.c:48:6:tcp_server_init	8	static
+../Core/Src/lwip_uart_comm.c:63:6:uart_receive_callback	8	static

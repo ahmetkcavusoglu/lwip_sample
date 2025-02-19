@@ -25,11 +25,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "lwip/opt.h"
-#include "lwip/tcp.h"
-#include "lwip/init.h"
-#include "lwip/ip_addr.h"
-#include <string.h>
+#include "lwip_uart_comm.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -44,64 +40,24 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-#define TCP_SERVER_PORT 5000
+
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-extern struct netif gnetif;     // it represents lwip network interface
-struct tcp_pcb *tcp_server_pcb; // tcp control block. it works for server connection management
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+void Error_Handler(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-err_t tcp_server_recv_callback(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err)
-{
-    if (p == NULL) {
-        tcp_close(tpcb);
-        return ERR_OK;
-    }
-
-    if (strncmp((char*)p->payload, "hello", p->len) == 0) {
-        tcp_write(tpcb, " world ", 7, TCP_WRITE_FLAG_COPY);
-        tcp_output(tpcb);
-    }
-
-    pbuf_free(p);
-    return ERR_OK;
-}
-
-err_t tcp_server_accept_callback(void *arg, struct tcp_pcb *newpcb, err_t err)
-{
-  const char *msg = "Connected.\r\n";
-  if (netif_is_link_up(&gnetif))
-  {
-	  tcp_write(newpcb, msg, strlen(msg), TCP_WRITE_FLAG_COPY);
-  }
-
-  tcp_output(newpcb);
-  tcp_recv(newpcb, tcp_server_recv_callback);
-  return ERR_OK;
-}
-
-void tcp_server_init(void)
-{
-    tcp_server_pcb = tcp_new();
-    if (tcp_server_pcb == NULL) {
-        return;
-    }
-    // IP_ADDR_ANY kullanılarak hem 192.168.1.x, hem de 127.0.0.1 gelen istekler dinlenir.
-    tcp_bind(tcp_server_pcb, IP_ADDR_ANY, TCP_SERVER_PORT);
-    tcp_server_pcb = tcp_listen(tcp_server_pcb);
-    tcp_accept(tcp_server_pcb, tcp_server_accept_callback);
-}
 
 /* USER CODE END 0 */
 
@@ -139,6 +95,7 @@ int main(void)
   MX_LWIP_Init();
   /* USER CODE BEGIN 2 */
   tcp_server_init();
+  HAL_UART_Receive_IT(&huart3, &rx_data, 1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -148,12 +105,20 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-
-	  MX_LWIP_Process();
+      MX_LWIP_Process();
   }
   /* USER CODE END 3 */
 }
-
+/**
+ * @brief  UART RX Callback
+ */
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+    if (huart->Instance == USART3)
+    {
+        uart_receive_callback();
+    }
+}
 /**
   * @brief System Clock Configuration
   * @retval None
