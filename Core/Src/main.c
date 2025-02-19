@@ -50,7 +50,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-extern struct netif gnetif;     // it represents lwip network interface 
+extern struct netif gnetif;     // it represents lwip network interface
 struct tcp_pcb *tcp_server_pcb; // tcp control block. it works for server connection management
 /* USER CODE END PV */
 
@@ -62,7 +62,7 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-err_t tcp_server_recv_callback(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err) 
+err_t tcp_server_recv_callback(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err)
 {
     if (p == NULL) {
         tcp_close(tpcb);
@@ -85,13 +85,13 @@ err_t tcp_server_accept_callback(void *arg, struct tcp_pcb *newpcb, err_t err)
   {
 	  tcp_write(newpcb, msg, strlen(msg), TCP_WRITE_FLAG_COPY);
   }
-  
+
   tcp_output(newpcb);
   tcp_recv(newpcb, tcp_server_recv_callback);
   return ERR_OK;
 }
 
-void tcp_server_init(void) 
+void tcp_server_init(void)
 {
     tcp_server_pcb = tcp_new();
     if (tcp_server_pcb == NULL) {
@@ -148,6 +148,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
 	  MX_LWIP_Process();
   }
   /* USER CODE END 3 */
