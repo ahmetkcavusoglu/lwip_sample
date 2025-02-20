@@ -51,7 +51,6 @@
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
-void Error_Handler(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -106,19 +105,11 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
       MX_LWIP_Process();
+      send_uart_data_to_tcp();
   }
   /* USER CODE END 3 */
 }
-/**
- * @brief  UART RX Callback
- */
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-    if (huart->Instance == USART3)
-    {
-        uart_receive_callback();
-    }
-}
+
 /**
   * @brief System Clock Configuration
   * @retval None
@@ -177,7 +168,16 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+/**
+ * @brief  UART RX Callback
+ */
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+    if (huart->Instance == USART3)
+    {
+        uart_receive_callback();
+    }
+}
 /* USER CODE END 4 */
 
 /**
