@@ -22,5 +22,6 @@ void tcp_server_init(void);
 err_t tcp_server_accept_callback(void *arg, struct tcp_pcb *newpcb, err_t err);
 err_t tcp_server_recv_callback(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err);
 void uart_receive_callback(void);
+void send_uart_data_to_tcp(void);
 
 #endif /* LWIP_UART_COMM_H */

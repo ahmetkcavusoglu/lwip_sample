@@ -44,34 +44,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := 002_TCP_SAMPLE_w_TERMINAL_PROGRAM
+BUILD_ARTIFACT_NAME := 002_TCP_with_UART
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-002_TCP_SAMPLE_w_TERMINAL_PROGRAM.elf \
+002_TCP_with_UART.elf \
 
 MAP_FILES += \
-002_TCP_SAMPLE_w_TERMINAL_PROGRAM.map \
+002_TCP_with_UART.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-002_TCP_SAMPLE_w_TERMINAL_PROGRAM.list \
+002_TCP_with_UART.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: 002_TCP_SAMPLE_w_TERMINAL_PROGRAM.elf secondary-outputs
+main-build: 002_TCP_with_UART.elf secondary-outputs
 
 # Tool invocations
-002_TCP_SAMPLE_w_TERMINAL_PROGRAM.elf 002_TCP_SAMPLE_w_TERMINAL_PROGRAM.map: $(OBJS) $(USER_OBJS) C:\Users\ahmet\STM32CubeIDE\workspace_1.17.0\002_TCP_SAMPLE_w_TERMINAL_PROGRAM\STM32F767ZITX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "002_TCP_SAMPLE_w_TERMINAL_PROGRAM.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"C:\Users\ahmet\STM32CubeIDE\workspace_1.17.0\002_TCP_SAMPLE_w_TERMINAL_PROGRAM\STM32F767ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="002_TCP_SAMPLE_w_TERMINAL_PROGRAM.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+002_TCP_with_UART.elf 002_TCP_with_UART.map: $(OBJS) $(USER_OBJS) C:\Users\ahmet\STM32CubeIDE\workspace_1.17.0\002_TCP_SAMPLE_w_TERMINAL_PROGRAM\STM32F767ZITX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "002_TCP_with_UART.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"C:\Users\ahmet\STM32CubeIDE\workspace_1.17.0\002_TCP_SAMPLE_w_TERMINAL_PROGRAM\STM32F767ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="002_TCP_with_UART.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -80,14 +80,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-002_TCP_SAMPLE_w_TERMINAL_PROGRAM.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "002_TCP_SAMPLE_w_TERMINAL_PROGRAM.list"
+002_TCP_with_UART.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "002_TCP_with_UART.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) 002_TCP_SAMPLE_w_TERMINAL_PROGRAM.elf 002_TCP_SAMPLE_w_TERMINAL_PROGRAM.list 002_TCP_SAMPLE_w_TERMINAL_PROGRAM.map default.size.stdout
+	-$(RM) 002_TCP_with_UART.elf 002_TCP_with_UART.list 002_TCP_with_UART.map default.size.stdout
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)

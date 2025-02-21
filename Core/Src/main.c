@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "lwip.h"
+#include "tim.h"
 #include "usart.h"
 #include "usb_otg.h"
 #include "gpio.h"
@@ -92,9 +93,11 @@ int main(void)
   MX_USART3_UART_Init();
   MX_USB_OTG_FS_PCD_Init();
   MX_LWIP_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
   tcp_server_init();
   HAL_UART_Receive_IT(&huart3, &rx_data, 1);
+  HAL_TIM_Base_Start_IT(&htim3);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -105,7 +108,6 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
       MX_LWIP_Process();
-      send_uart_data_to_tcp();
   }
   /* USER CODE END 3 */
 }
@@ -178,6 +180,23 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
         uart_receive_callback();
     }
 }
+
+volatile uint16_t timer_counter = 0;
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+    if (htim->Instance == TIM3) 
+    {
+        timer_counter++;
+
+        if (timer_counter >= 10)
+        {
+            send_uart_data_to_tcp();
+            timer_counter = 0;
+        }
+    }
+}
+
 /* USER CODE END 4 */
 
 /**
